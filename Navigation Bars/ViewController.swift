@@ -9,19 +9,41 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var started = false
+    var timeToRestart = false
+    
+    @IBOutlet weak var timeDisplay: UILabel!
+    @IBOutlet weak var stopOrResetButton: UIBarButtonItem!
+    
+    @IBAction func onStartPress(sender: AnyObject) {
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("result"), userInfo: nil, repeats: true)
+    }
+    @IBAction func onStopOrResetPress(sender: AnyObject) {
+        if timeToRestart {
+            count = 0
+            timeDisplay.text = String(count)
+
+        } else {
+            timer.invalidate()
+            timeToRestart = true
+            stopOrResetButton.title = "Reset"
+        }
+    }
+
     
     var timer = NSTimer()
     
-    var count = 0
+    var count = 1
     
     func result(){
         println(count)
+        timeDisplay.text = String(count)
         count += 1
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("result"), userInfo: nil, repeats: true)
+        timeDisplay.text = "0"
     }
 
     override func didReceiveMemoryWarning() {
